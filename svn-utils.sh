@@ -20,7 +20,7 @@ function branch()
 # List checked out branches from current working project
 function branch-list()
 {
-	ls -l $PROJECT_ROOT/$PROJECT-branches | awk '{ print $8 }'
+	list $PROJECT_ROOT/$PROJECT-branches
 }
 # Create a new branch for current project
 # - $1 the tag name
@@ -55,7 +55,7 @@ function tag()
 # List checked out branches from current working project
 function tag-list()
 {
-	ls -l $PROJECT_ROOT/$PROJECT-tags | awk '{ print $8 }'
+	list $PROJECT_ROOT/$PROJECT-tags
 }
 # Create a new tag for current project
 # - $1 the tag name
@@ -113,4 +113,10 @@ function svn-ignore()
 		CMD="$CMD_1 --depth $1 $CMD_2"
 	fi
 	$CMD
+}
+
+# Utility function to print branches and tag names
+function list()
+{
+	ls -l $1 | awk '{ if( $8 != "" ) { print $8 } }'
 }

@@ -33,6 +33,7 @@ function branch-add()
 	svn co $REPO/tags/dev/$1 $1
 	cd $1
 	mvn clean install -Dmaven.test.skip=true -o
+
 	popd
 }
 # Remove branch for current project
@@ -86,7 +87,13 @@ function tag-rm()
 # sudo apt-get install colordiff
 function svn-diff()
 {
-	svn diff "${@}" | colordiff
+	CMD="svn diff ${1}"
+	if [[  $2 -gt 0 ]] && [[ $3 -gt 0 ]]  ;then
+		CMD="svn diff -r$2:$3 $1"
+	elif [[ $2 -gt 0 ]]; then
+		CMD="svn diff -r$2:HEAD $1"
+	fi
+	$CMD | colordiff
 }
 
 # Add pendent files to svn repository in current dir

@@ -96,6 +96,12 @@ function svn-diff()
 	$CMD | colordiff
 }
 
+# Paginated color output for diff
+function svn-diff-view()
+{
+	svn-diff ${@} | less -r
+}
+
 # Add pendent files to svn repository in current dir
 # only adds java and action script files automatically
 function svn-add()

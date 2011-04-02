@@ -1,10 +1,13 @@
 #! /bin/bash
 
-PROJECT="foo"
-# checkout dir
+PROJECT="poker"
 PROJECT_ROOT="$HOME/Projects"
-REPO=http://hosting.com/$PROJECT/
+REPO=http://sources.vostu.com/repos/$PROJECT/
 
+function list()
+{
+	ls -l $1 | awk '{ if( $8 != "" ) { print $8 } }'
+}
 #Go to current project trunk
 function trunk()
 {
@@ -30,10 +33,7 @@ function branch-add()
 	pushd .
 	svn cp $REPO/trunk/dev  $REPO/branches/dev/$1 -m "$2"
 	cd $PROJECT_ROOT/$PROJECT-branches/
-	svn co $REPO/tags/dev/$1 $1
-	cd $1
-	mvn clean install -Dmaven.test.skip=true -o
-
+	svn co $REPO/branches/dev/$1 $1
 	popd
 }
 # Remove branch for current project
@@ -87,13 +87,7 @@ function tag-rm()
 # sudo apt-get install colordiff
 function svn-diff()
 {
-	CMD="svn diff ${1}"
-	if [[  $2 -gt 0 ]] && [[ $3 -gt 0 ]]  ;then
-		CMD="svn diff -r$2:$3 $1"
-	elif [[ $2 -gt 0 ]]; then
-		CMD="svn diff -r$2:HEAD $1"
-	fi
-	$CMD | colordiff
+	svn diff ${@} | colordiff
 }
 
 # Paginated color output for diff
@@ -126,10 +120,4 @@ function svn-ignore()
 		CMD="$CMD_1 --depth $1 $CMD_2"
 	fi
 	$CMD
-}
-
-# Utility function to print branches and tag names
-function list()
-{
-	ls -l $1 | awk '{ if( $8 != "" ) { print $8 } }'
 }

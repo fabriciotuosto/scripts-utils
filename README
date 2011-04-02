@@ -2,6 +2,10 @@ to use this scripts you need to import these functions into your current shell
 
 in bash is like these
 # Function helpers for svn
-if [ -f ~/scripts/svn-utils.sh ]; then
-    . ~/scripts/svn-utils.sh
+$SCRIPT_DIR=~/scripts/
+if [ -d $SCRIPT_DIR ]; then
+	for SCRIPT in $SCRIPT_DIR
+	do
+    . $SCRIPT
+  done
 fi
